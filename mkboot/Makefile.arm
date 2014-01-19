@@ -1,0 +1,44 @@
+# Makefile for mkbootimg
+#CROSS_ROOT=$(HOME)/toolchains/arm-eabi-linaro-4.6.2
+#CROSS_COMPILE=$(CROSS_ROOT)/bin/arm-eabi-
+ANDROID_NDK_ROOT=$(HOME)/android-ndk-r9b
+CROSS_ROOT=$(ANDROID_NDK_ROOT)/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64
+CROSS_COMPILE=$(CROSS_ROOT)/bin/arm-linux-androideabi-
+SYSROOT=$(ANDROID_NDK_ROOT)/platforms/android-9/arch-arm
+AS= $(CROSS_COMPILE)as
+LD= $(CROSS_COMPILE)ld
+REAL_CC= $(CROSS_COMPILE)gcc
+CPP= $(CC) -E
+AR= $(CROSS_COMPILE)ar
+NM= $(CROSS_COMPILE)nm
+STRIP= $(CROSS_COMPILE)strip
+OBJCOPY= $(CROSS_COMPILE)objcopy
+OBJDUMP= $(CROSS_COMPILE)objdump
+CC = $(CROSS_COMPILE)gcc --sysroot=$(SYSROOT)
+CFLAGS=-static -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16
+RM = rm -f
+
+TARGETS = mkbootimg mkbootfs unpackbootimg
+OBJS = $(addsuffix .o, $(TARGETS))
+
+all: $(TARGETS)
+
+mkbootimg: mkbootimg.o rsa.o sha.o
+	$(CC) $(CFLAGS) -o mkbootimg mkbootimg.o rsa.o sha.o
+	$(STRIP) mkbootimg
+
+mkbootfs:
+	$(CC) $(CFLAGS) -o mkbootfs mkbootfs.c
+	$(STRIP) mkbootfs
+
+unpackbootimg:
+	$(CC) $(CFLAGS) -o unpackbootimg unpackbootimg.c
+	$(STRIP) unpackbootimg
+
+$(OBJS): %.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $^
+
+.PHONY: clean
+
+clean:
+	$(RM) $(TARGETS) *.o
