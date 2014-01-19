@@ -1,0 +1,18 @@
+arm contents from ../mkboot (make -f Makefile.arm)
+p700_20e contains p700_20e zImage and modules.tgz
+-----------------------------------getting environment----------------------------------
+m_pid=$$
+p_pid=`grep '^PPid:' /proc/$m_pid/status | grep -o '[0-9]*'`
+g_pid=`grep '^PPid:' /proc/$p_pid/status | grep -o '[0-9]*'`
+gg_pid=`grep '^PPid:' /proc/$g_pid/status | grep -o '[0-9]*'`
+
+printenv>/external_sd/env.txt
+echo m_pid: $m_pid>>/external_sd/env.txt
+echo m_cmd: `xargs -0 echo < /proc/$m_pid/cmdline`>>/external_sd/env.txt
+echo p_pid: $p_pid>>/external_sd/env.txt
+echo p_cmd: `xargs -0 echo < /proc/$p_pid/cmdline`>>/external_sd/env.txt
+echo g_pid: $g_pid>>/external_sd/env.txt
+echo g_cmd: `xargs -0 echo < /proc/$g_pid/cmdline`>>/external_sd/env.txt
+echo gg_pid: $gg_pid>>/external_sd/env.txt
+echo gg_cmd: `xargs -0 echo < /proc/$gg_pid/cmdline`>>/external_sd/env.txt
+--------------------------------------------------------------------------------------

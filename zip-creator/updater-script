@@ -1,0 +1,12 @@
+assert(getprop("ro.product.device") == "p700" || getprop("ro.build.product") == "p700");
+ui_print("Repacking kernel...");
+show_progress(0.1, 0);
+mount("ext4", "EMMC", "/dev/block/mmcblk0p14", "/system");
+package_extract_dir("tmp", "/tmp");
+set_perm(0, 0, 0755, "/tmp/copy_kernel.sh");
+run_program("/tmp/copy_kernel.sh");
+
+show_progress(1.0, 10);
+unmount("/system");
+ui_print("");
+ui_print("Finished.");
