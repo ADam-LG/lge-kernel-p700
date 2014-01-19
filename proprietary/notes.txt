@@ -1,0 +1,1 @@
+./modinfo32.sh WCN1314_rf.ko.blob > WCN1314_rf.sym

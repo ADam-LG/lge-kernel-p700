@@ -42,6 +42,8 @@ cp proprietary/WCN1314_rf.ko.blob modules/volans/WCN1314_rf.ko
 newmagic=$(modinfo -F vermagic modules/volans/cfg80211.ko | cut -d ':' -f 1)
 offset=$[$(LC_ALL=C grep -a -b -o $'vermagic=' modules/volans/WCN1314_rf.ko | cut -d ':' -f 1)+9]
 printf $newmagic | dd of=modules/volans/WCN1314_rf.ko bs=1 seek=$offset count=${#newmagic} conv=notrunc
+# check module symbols
+proprietary/mod_check.sh
 
 END=$(date +%s)
 BUILDTIME=$((END - START))
