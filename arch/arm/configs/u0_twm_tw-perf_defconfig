@@ -359,7 +359,7 @@ CONFIG_LGE_DETECT_USB_CABLE_TYPE=y
 #LGE_CHANGE_E : [jongjin7.park@lge.com] 2012-11-15
 CONFIG_MACH_MSM7X27A_U0=y
 #LGE_CHANGE_S : [bohyun.jung@lge.com] 2013-01-10. Remove debug feature.
-CONFIG_MACH_MSM7X27A_U0_NO_DEBUG=y
+CONFIG_MACH_LGE_NO_DEBUG_INFO=y
 #LGE_CHANGE_E : [bohyun.jung@lge.com] 2013-01-10. Remove debug feature.
 CONFIG_LGE_BOARD_HEADER_FILE="mach/lge/board_u0.h"
 CONFIG_LGE_BDI_TIMER_BUG_PATCH=y
