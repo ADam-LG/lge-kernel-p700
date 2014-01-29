@@ -230,6 +230,18 @@ static struct clkctl_acpu_speed pll0_960_pll1_245_pll2_1200_pll4_1008[] = {
 	{ 0, 504000, ACPU_PLL_4, 6, 1, 63000, 3, 6, 160000 },
 	{ 1, 600000, ACPU_PLL_2, 2, 1, 75000, 3, 6, 160000 },
 	{ 1, 1008000, ACPU_PLL_4, 6, 0, 126000, 3, 7, 200000},
+#ifdef CONFIG_MSM7X27A_U0_OVERCLOCK
+	{ 1, 1036800, ACPU_PLL_4, 6, 0, 129600, 3, 7, 210000 },
+	{ 1, 1056000, ACPU_PLL_4, 6, 0, 132000, 3, 7, 220000 },
+	{ 1, 1113600, ACPU_PLL_4, 6, 0, 139200, 3, 7, 230000 },
+	{ 1, 1152000, ACPU_PLL_4, 6, 0, 144000, 3, 7, 240000 },
+	{ 1, 1190400, ACPU_PLL_4, 6, 0, 148800, 3, 7, 250000 },
+	{ 1, 1228800, ACPU_PLL_4, 6, 0, 153600, 3, 7, 290000 },
+#ifdef CONFIG_MSM7X27A_BACONMAKER
+	{ 1, 1267200, ACPU_PLL_4, 6, 0, 158400, 3, 7, 320000 },
+	{ 1, 1305600, ACPU_PLL_4, 6, 0, 163200, 3, 7, 360000 },
+#endif
+#endif
 	{ 0 }
 };
 
@@ -449,6 +461,18 @@ static struct clkctl_acpu_speed pll0_960_pll1_737_pll2_1200_pll4_1008[] = {
 	{ 0, 504000, ACPU_PLL_4, 6, 1, 63000, 3, 6, 160000 },
 	{ 1, 600000, ACPU_PLL_2, 2, 1, 75000, 3, 6, 160000 },
 	{ 1, 1008000, ACPU_PLL_4, 6, 0, 126000, 3, 7, 200000},
+#ifdef CONFIG_MSM7X27A_U0_OVERCLOCK
+	{ 1, 1036800, ACPU_PLL_4, 6, 0, 129600, 3, 7, 210000 },
+	{ 1, 1056000, ACPU_PLL_4, 6, 0, 132000, 3, 7, 220000 },
+	{ 1, 1113600, ACPU_PLL_4, 6, 0, 139200, 3, 7, 230000 },
+	{ 1, 1152000, ACPU_PLL_4, 6, 0, 144000, 3, 7, 240000 },
+	{ 1, 1190400, ACPU_PLL_4, 6, 0, 148800, 3, 7, 250000 },
+	{ 1, 1228800, ACPU_PLL_4, 6, 0, 153600, 3, 7, 290000 },
+#ifdef CONFIG_MSM7X27A_BACONMAKER
+	{ 1, 1267200, ACPU_PLL_4, 6, 0, 158400, 3, 7, 320000 },
+	{ 1, 1305600, ACPU_PLL_4, 6, 0, 163200, 3, 7, 360000 },
+#endif
+#endif
 	{ 0 }
 };
 
@@ -615,10 +639,24 @@ static void acpuclk_set_div(const struct clkctl_acpu_speed *hunt_s)
 {
 	uint32_t reg_clkctl, reg_clksel, clk_div, src_sel;
 
+#ifdef CONFIG_MSM7X27A_U0_OVERCLOCK
+	uint32_t a11_div;
+#endif
+
 	reg_clksel = readl_relaxed(A11S_CLK_SEL_ADDR);
 
 	/* AHB_CLK_DIV */
 	clk_div = (reg_clksel >> 1) & 0x03;
+
+#ifdef CONFIG_MSM7X27A_U0_OVERCLOCK
+	a11_div=hunt_s->a11clk_src_div;
+        if(hunt_s->a11clk_khz>1008000) {
+        a11_div=0;
+        writel(hunt_s->a11clk_khz/19200, MSM_CLK_CTL_BASE+0x33C);
+        cpu_relax();
+        udelay(50);
+	}
+#endif
 	/* CLK_SEL_SRC1NO */
 	src_sel = reg_clksel & 1;
 

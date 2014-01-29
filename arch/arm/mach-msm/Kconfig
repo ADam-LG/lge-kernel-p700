@@ -1571,6 +1571,21 @@ config MSM_CPU_FREQ_MIN
 	depends on MSM_CPU_FREQ_SET_MIN_MAX
 	default 245760
 
+config MSM7X27A_U0_OVERCLOCK
+	bool "Enable SoC overclocking for MSM7x27A"
+	depends on MSM_CPU_FREQ_SET_MIN_MAX
+	depends on ARCH_MSM7X27A
+	default n
+	help
+	  Enable support for non-standard msm7x27A acpuclock frequencies/voltages. This is for u0 board.
+
+config MSM7X27A_BACONMAKER
+	bool "Enable SoC overclocking to dangerous frequencies"
+	depends on MSM7X27A_U0_OVERCLOCK
+	default n
+	help
+	  Enable support for dangerous msm7x27A acpuclock frequencies/voltages. This is for u0 board.
+
 endif # CPU_FREQ_MSM
 
 config MSM_CPU_AVS
