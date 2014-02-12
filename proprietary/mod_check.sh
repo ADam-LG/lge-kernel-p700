@@ -3,7 +3,7 @@
 cd "$(dirname "$0")"
 
 module_syms=WCN1314_rf.sym
-kernel_syms=../Module.symvers
+kernel_syms=../$output/Module.symvers
 module_file=../modules/volans/WCN1314_rf.ko
 
 symbols_written=0
